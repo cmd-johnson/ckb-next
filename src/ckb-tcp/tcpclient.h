@@ -32,6 +32,8 @@ private:
 
     void handleSetColor(QTcpSocket* connection, const QString& key, QStringList& parameters);
     void handleClear(QTcpSocket* connection, const QString& key, QStringList& parameters);
+
+    void handleGetKeys(QTcpSocket* connection);
 };
 
 #endif // TCPCLIENT_H

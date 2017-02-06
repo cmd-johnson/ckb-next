@@ -25,6 +25,7 @@ public:
     int getFrame(ckb_runctx* context) const;
 
     bool keyExists(const QString& key) const;
+    const QSet<QString>& getKeys() const;
 
 private:
     QSet<QString> keys;

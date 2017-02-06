@@ -64,3 +64,8 @@ bool KeyEffectManager::keyExists(const QString &key) const
 {
     return keys.contains(key);
 }
+
+const QSet<QString>& KeyEffectManager::getKeys() const
+{
+    return keys;
+}

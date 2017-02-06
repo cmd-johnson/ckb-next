@@ -49,7 +49,10 @@ void TcpClient::handleCommand(QTcpSocket* connection, const QString &command)
     POP_NEXT_PARAM(cmd, elements, "no_command");
 
     auto commandHandler = commandHandlers.find(cmd);
-    if (commandHandler == commandHandlers.end()) {
+    if (cmd == "get_keys") {
+        handleGetKeys(connection);
+        return;
+    } else if (commandHandler == commandHandlers.end()) {
         WRITE_ERR("invalid_command");
     }
 
@@ -89,4 +92,13 @@ void TcpClient::handleClear(QTcpSocket* connection, const QString& key, QStringL
     keyEffectManager->clearEffect(key);
 
     WRITE_ACK;
+}
+
+void TcpClient::handleGetKeys(QTcpSocket *connection)
+{
+    QStringList keys = keyEffectManager->getKeys().toList();
+    std::sort(keys.begin(), keys.end());
+    connection->write("KEYS ");
+    connection->write(keys.join(',').toUtf8());
+    connection->write("\n");
 }
