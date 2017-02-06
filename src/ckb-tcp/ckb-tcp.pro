@@ -19,11 +19,13 @@ SOURCES += \
     tcpclient.cpp \
     keyeffectmanager.cpp \
     keyeffects/keyeffect.cpp \
-    keyeffects/fixedcolor.cpp
+    keyeffects/fixedcolor.cpp \
+    keyeffects/colorgradient.cpp
 
 HEADERS += \
     bootstrapper.h \
     tcpclient.h \
     keyeffectmanager.h \
     keyeffects/keyeffect.h \
-    keyeffects/fixedcolor.h
+    keyeffects/fixedcolor.h \
+    keyeffects/colorgradient.h

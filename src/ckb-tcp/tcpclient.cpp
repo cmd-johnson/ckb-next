@@ -1,6 +1,7 @@
 #include "tcpclient.h"
 
 #include "keyeffects/fixedcolor.h"
+#include "keyeffects/colorgradient.h"
 
 #include <QFile>
 #include <QHostAddress>
@@ -12,6 +13,7 @@ TcpClient::TcpClient(KeyEffectManager* keyEffectManager, QObject *parent)
 {
     using namespace std::placeholders;
     commandHandlers["set_color"] = std::bind(&TcpClient::handleSetColor, this, _1, _2, _3);
+    commandHandlers["set_gradient"] = std::bind(&TcpClient::handleSetGradient, this, _1, _2, _3);
     commandHandlers["clear"] = std::bind(&TcpClient::handleClear, this, _1, _2, _3);
 }
 
@@ -22,7 +24,7 @@ void TcpClient::start()
     socket->connectToHost(QHostAddress::LocalHost, 3007);
     if (socket->waitForConnected())
     {
-        socket->write("Hello, World\n");
+        socket->write("Hello from CKB-TCP\n");
     }
 }
 
@@ -79,6 +81,52 @@ void TcpClient::handleSetColor(QTcpSocket* connection, const QString& key, QStri
     }
 
     keyEffectManager->setEffect(key, new FixedColor(color));
+
+    WRITE_ACK;
+}
+
+void TcpClient::handleSetGradient(QTcpSocket *connection, const QString &key, QStringList &parameters)
+{
+    bool ok = true;
+
+    POP_NEXT_PARAM(durationString, parameters, "no_duration");
+    double duration = durationString.toDouble(&ok);
+    if (!ok) {
+        WRITE_ERR("invalid_duration");
+    }
+
+    POP_NEXT_PARAM(loopCountString, parameters, "no_loop_count");
+    uint loopCount = loopCountString.toUInt(&ok);
+    if (!ok) {
+        WRITE_ERR("invalid_loop_count");
+    }
+
+    if (parameters.empty()) {
+        WRITE_ERR("no_stops");
+    }
+
+    QList<ColorGradient::ColorStop> colorStops;
+    while (parameters.size() >= 2) {
+        double position = parameters.first().toDouble(&ok);
+        if (!ok) {
+            WRITE_ERR("invalid_stop_position");
+        }
+        parameters.removeFirst();
+
+        QColor color = QColor(parameters.first());
+        if (!color.isValid()) {
+            WRITE_ERR("invalid_stop_color");
+        }
+        parameters.removeFirst();
+
+        colorStops.append(ColorGradient::ColorStop { position, color });
+    }
+
+    if (!parameters.empty()) {
+        WRITE_ERR("incomplete_stop");
+    }
+
+    keyEffectManager->setEffect(key, new ColorGradient(colorStops, duration, loopCount));
 
     WRITE_ACK;
 }

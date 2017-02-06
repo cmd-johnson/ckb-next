@@ -31,6 +31,7 @@ private:
     void handleCommand(QTcpSocket* connection, const QString& command);
 
     void handleSetColor(QTcpSocket* connection, const QString& key, QStringList& parameters);
+    void handleSetGradient(QTcpSocket* connection, const QString& key, QStringList& parameters);
     void handleClear(QTcpSocket* connection, const QString& key, QStringList& parameters);
 
     void handleGetKeys(QTcpSocket* connection);
