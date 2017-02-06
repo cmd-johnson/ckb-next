@@ -13,7 +13,7 @@ bool FixedColor::advance(double deltaT)
     return true;
 }
 
-const QColor& FixedColor::getColor() const
+QColor FixedColor::getColor() const
 {
     return color;
 }

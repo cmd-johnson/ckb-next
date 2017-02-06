@@ -9,7 +9,7 @@ public:
     FixedColor(const QColor& color);
 
     virtual bool advance(double deltaT) override;
-    virtual const QColor& getColor() const override;
+    virtual QColor getColor() const override;
 
 private:
     QColor color;

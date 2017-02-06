@@ -9,7 +9,7 @@ public:
     KeyEffect();
 
     virtual bool advance(double deltaT);
-    virtual const QColor& getColor() const = 0;
+    virtual QColor getColor() const = 0;
 
 protected:
     double phase;
