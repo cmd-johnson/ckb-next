@@ -13,7 +13,8 @@ SUBDIRS = \
     src/ckb-pinwheel \
     src/ckb-random \
     src/ckb-rain \
-    src/ckb-heat
+    src/ckb-heat \
+    src/ckb-tcp
 
 # Music visualizer requires Pulseaudio libraries
 linux {
