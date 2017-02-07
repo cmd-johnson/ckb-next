@@ -1,6 +1,7 @@
 #include "bootstrapper.h"
 
 #include "client.h"
+#include "commandhandler.h"
 #include "config.h"
 
 #include <QCoreApplication>
@@ -26,6 +27,14 @@ void Bootstrapper::startApplication()
     QCoreApplication* app = new QCoreApplication(argc, argv);
 
     Client client(config->socketPath);
+    CommandHandler commandHandler(keyEffectManager, config->clientId);
+
+    connect(&client, &Client::messageReceived,
+            &commandHandler, &CommandHandler::onMessageReceived);
+
+    connect(&client, &Client::connectionEstablished,
+            &commandHandler, &CommandHandler::onConnectionEstablished);
+
     QTimer::singleShot(0, &client, &Client::openConnection);
 
     app->exec();

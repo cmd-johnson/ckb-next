@@ -85,7 +85,7 @@ void Client::onReadyRead()
         QJsonDocument message = QJsonDocument::fromJson(socket->readLine(), &error);
         if (error.error != QJsonParseError::NoError) {
             sendMessage(QJsonObject {
-                            { "error", "invalid JSON" },
+                            { "error", "invalid_json" },
                             { "code", error.error },
                             { "message", error.errorString() }
                         });
