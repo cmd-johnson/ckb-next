@@ -24,7 +24,7 @@ void Bootstrapper::startApplication()
     QCoreApplication* app = new QCoreApplication(argc, argv);
 
     Client client(keyEffectManager);
-    QTimer::singleShot(0, &client, &Client::start);
+    QTimer::singleShot(0, &client, &Client::openConnection);
 
     app->exec();
 }
