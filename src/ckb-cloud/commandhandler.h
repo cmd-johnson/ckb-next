@@ -21,14 +21,14 @@ public slots:
 private:
     KeyEffectManager* keyEffectManager;
 
-    typedef std::function<void(const QJsonObject&, KeyEffectManager*, Client*)> CommandExecutor;
+    typedef std::function<void(const QString&, const QJsonObject&, KeyEffectManager*, Client*)> CommandExecutor;
 
     QHash<QString, CommandExecutor> commandHandlers;
 
-    static void handleListKeys(const QJsonObject& command, KeyEffectManager* keyEffectManager, Client* sender);
-    static void handleSetColor(const QJsonObject& command, KeyEffectManager* keyEffectManager, Client* sender);
-    static void handleSetGradient(const QJsonObject& command, KeyEffectManager* keyEffectManager, Client* sender);
-    static void handleClear(const QJsonObject& command, KeyEffectManager* keyEffectManager, Client* sender);
+    static void handleListKeys(const QString& reqId, const QJsonObject& command, KeyEffectManager* keyEffectManager, Client* sender);
+    static void handleSetColor(const QString& reqId, const QJsonObject& command, KeyEffectManager* keyEffectManager, Client* sender);
+    static void handleSetGradient(const QString& reqId, const QJsonObject& command, KeyEffectManager* keyEffectManager, Client* sender);
+    static void handleClear(const QString& reqId, const QJsonObject& command, KeyEffectManager* keyEffectManager, Client* sender);
 };
 
 #endif // COMMANDHANDLER_H
