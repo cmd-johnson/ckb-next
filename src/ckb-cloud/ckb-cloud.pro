@@ -32,4 +32,5 @@ HEADERS += \
     keyeffects/fixedcolor.h \
     keyeffects/colorgradient.h \
     client.h \
-    commandhandler.h
+    commandhandler.h \
+    config.h

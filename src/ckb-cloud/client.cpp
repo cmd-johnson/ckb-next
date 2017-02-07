@@ -2,13 +2,12 @@
 
 #include <QJsonObject>
 #include <QTimer>
-#include <QFile>
 
 #define SOCKET_RECONNECTION_TIMEOUT 1000
 
-Client::Client(QObject *parent)
+Client::Client(QString socketPath, QObject *parent)
     : QObject(parent), socket(new QLocalSocket(this)),
-      socketPath("/tmp/ckb-cloud")
+      socketPath(socketPath)
 {
     connect(socket, &QLocalSocket::readyRead, this, &Client::onReadyRead);
     connect(socket, &QLocalSocket::connected, this, &Client::onConnected);
@@ -32,9 +31,11 @@ void Client::setSocketPath(const QString &value)
         return;
     }
     socketPath = value;
-    socket->close();
-    socket->waitForDisconnected();
-    openConnection();
+    if (socket->isOpen()) {
+        socket->close();
+        socket->waitForDisconnected();
+        openConnection();
+    }
 }
 
 void Client::sendMessage(const QJsonArray &json)

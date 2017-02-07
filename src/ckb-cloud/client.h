@@ -9,7 +9,7 @@ class Client : public QObject
 {
     Q_OBJECT
 public:
-    explicit Client(QObject *parent = 0);
+    explicit Client(QString socketPath, QObject *parent = 0);
 
     QString getSocketPath() const;
     void setSocketPath(const QString &value);
