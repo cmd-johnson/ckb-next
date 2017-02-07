@@ -1,6 +1,6 @@
 #include "bootstrapper.h"
 
-#include "tcpclient.h"
+#include "client.h"
 
 #include <QCoreApplication>
 #include <QThread>
@@ -23,8 +23,8 @@ void Bootstrapper::startApplication()
 
     QCoreApplication* app = new QCoreApplication(argc, argv);
 
-    TcpClient client(keyEffectManager);
-    QTimer::singleShot(0, &client, &TcpClient::start);
+    Client client(keyEffectManager);
+    QTimer::singleShot(0, &client, &Client::start);
 
     app->exec();
 }
