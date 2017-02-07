@@ -10,25 +10,35 @@
 
 namespace {
 
+/* Success messages */
+
+QJsonObject SUCCESS {
+    { "success", true }
+};
+
 /* General errors */
 
 QJsonObject ERR_NOT_AN_OBJECT {
+    { "success", false },
     { "error", "invalid_format" },
     { "message", "Root element has to be a non-empty JSON object." }
 };
 
 QJsonObject ERR_NO_COMMAND {
+    { "success", false },
     { "error", "no_command_specified" },
     { "message", "The message does not contain a command." }
 };
 
 QJsonObject ERR_INVALID_COMMAND {
+    { "success", false },
     { "error", "invalid_command" },
     { "message", "The message does not contain a valid command." }
 };
 
 QJsonObject ERR_INVALID_PARAMETER(const QString& parameter) {
     return QJsonObject {
+        { "success", false },
         { "error", "invalid_parameter" },
         { "message", QString("Encountered an unexpected value for parameter '%1'.").arg(parameter) }
     };
@@ -96,7 +106,11 @@ void CommandHandler::handleListKeys(const QJsonObject &command, KeyEffectManager
     for (auto& key : keyEffectManager->getKeys()) {
         keys.append(key);
     }
-    sender->sendMessage(keys);
+
+    sender->sendMessage(QJsonObject {
+        { "success", true },
+        { "keys", keys }
+    });
 }
 
 void CommandHandler::handleSetColor(const QJsonObject &command, KeyEffectManager *keyEffectManager, Client *sender)
@@ -114,7 +128,8 @@ void CommandHandler::handleSetColor(const QJsonObject &command, KeyEffectManager
     }
 
     keyEffectManager->setEffect(key, new FixedColor(color));
-    sender->sendMessage(command);
+
+    sender->sendMessage(SUCCESS);
 }
 
 void CommandHandler::handleSetGradient(const QJsonObject &command, KeyEffectManager *keyEffectManager, Client *sender)
@@ -176,8 +191,8 @@ void CommandHandler::handleSetGradient(const QJsonObject &command, KeyEffectMana
     }
 
     keyEffectManager->setEffect(key, new ColorGradient(colorStops, duration, (uint)loopCount));
-    sender->sendMessage(command);
-    sender->sendMessage(QJsonObject {{"loop_count", QString::number(loopCount)}});
+
+    sender->sendMessage(SUCCESS);
 }
 
 void CommandHandler::handleClear(const QJsonObject &command, KeyEffectManager *keyEffectManager, Client *sender)
@@ -189,5 +204,6 @@ void CommandHandler::handleClear(const QJsonObject &command, KeyEffectManager *k
     }
 
     keyEffectManager->clearEffect(key);
-    sender->sendMessage(command);
+
+    sender->sendMessage(SUCCESS);
 }

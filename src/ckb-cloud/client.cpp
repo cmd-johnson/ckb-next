@@ -55,7 +55,6 @@ void Client::sendMessage(const QJsonDocument& json)
         return;
     }
 
-    socket->write(">>>");
     socket->write(json.toJson(QJsonDocument::Compact));
     socket->write("\n");
 }
@@ -85,8 +84,8 @@ void Client::onReadyRead()
         QJsonDocument message = QJsonDocument::fromJson(socket->readLine(), &error);
         if (error.error != QJsonParseError::NoError) {
             sendMessage(QJsonObject {
+                            { "success", false },
                             { "error", "invalid_json" },
-                            { "code", error.error },
                             { "message", error.errorString() }
                         });
         }
