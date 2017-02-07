@@ -48,9 +48,15 @@ QJsonObject ERR_INVALID_PARAMETER(const QString& parameter) {
 
 CommandHandler::CommandHandler(KeyEffectManager *keyEffectManager,
                                QString clientId, QObject *parent)
-    : QObject(parent), keyEffectManager(keyEffectManager),
-      clientId(clientId)
+    : QObject(parent), keyEffectManager(keyEffectManager)
 {
+    commandHandlers["identify"] = [clientId](const QJsonObject&, KeyEffectManager*, Client* sender) {
+        sender->sendMessage(QJsonObject {
+            { "success", true },
+            { "client_id", clientId }
+        });
+    };
+
     commandHandlers["list_keys"] = &CommandHandler::handleListKeys;
     commandHandlers["set_key_color"] = &CommandHandler::handleSetColor;
     commandHandlers["set_key_gradient"] = &CommandHandler::handleSetGradient;
@@ -85,17 +91,6 @@ void CommandHandler::onMessageReceived(const QJsonDocument &json)
     } else {
         cmd.value()(object, keyEffectManager, client);
     }
-}
-
-void CommandHandler::onConnectionEstablished()
-{
-    Client* client = qobject_cast<Client*>(sender());
-    if (!client) return;
-
-    client->sendMessage(QJsonObject
-    {
-        { "register_client", clientId }
-    });
 }
 
 void CommandHandler::handleListKeys(const QJsonObject &command, KeyEffectManager *keyEffectManager, Client *sender)

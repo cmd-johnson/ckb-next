@@ -32,9 +32,6 @@ void Bootstrapper::startApplication()
     connect(&client, &Client::messageReceived,
             &commandHandler, &CommandHandler::onMessageReceived);
 
-    connect(&client, &Client::connectionEstablished,
-            &commandHandler, &CommandHandler::onConnectionEstablished);
-
     QTimer::singleShot(0, &client, &Client::openConnection);
 
     app->exec();

@@ -17,11 +17,9 @@ public:
 
 public slots:
     void onMessageReceived(const QJsonDocument& json);
-    void onConnectionEstablished();
 
 private:
     KeyEffectManager* keyEffectManager;
-    QString clientId;
 
     typedef std::function<void(const QJsonObject&, KeyEffectManager*, Client*)> CommandExecutor;
 
