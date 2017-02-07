@@ -1,19 +1,15 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include "commandhandler.h"
-
 #include <QLocalSocket>
 #include <QJsonDocument>
 #include <QObject>
-
-class KeyEffectManager;
 
 class Client : public QObject
 {
     Q_OBJECT
 public:
-    explicit Client(KeyEffectManager* keyEffectManager, QObject *parent = 0);
+    explicit Client(QObject *parent = 0);
 
     QString getSocketPath() const;
     void setSocketPath(const QString &value);
@@ -37,7 +33,6 @@ private slots:
 
 private:
     QLocalSocket* socket;
-    CommandHandler* commandHandler;
 
     QString socketPath;
 

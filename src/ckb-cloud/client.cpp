@@ -6,9 +6,8 @@
 
 #define SOCKET_RECONNECTION_TIMEOUT 1000
 
-Client::Client(KeyEffectManager *keyEffectManager, QObject *parent)
+Client::Client(QObject *parent)
     : QObject(parent), socket(new QLocalSocket(this)),
-      commandHandler(new CommandHandler(keyEffectManager, this)),
       socketPath("/tmp/ckb-cloud")
 {
     connect(socket, &QLocalSocket::readyRead, this, &Client::onReadyRead);
