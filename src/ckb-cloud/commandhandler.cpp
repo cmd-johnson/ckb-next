@@ -68,7 +68,7 @@ CommandHandler::CommandHandler(KeyEffectManager *keyEffectManager,
 {
     commandHandlers["identify"] = [clientId](const QString& reqId, const QJsonObject&, KeyEffectManager*, Client* sender) {
         sender->sendMessage({
-            { "reqId", reqId },
+            { "id", reqId },
             { "success", true },
             { "client_id", clientId }
         });
@@ -127,7 +127,7 @@ void CommandHandler::handleListKeys(const QString& reqId, const QJsonObject &com
 
     sender->sendMessage({
         { "success", true },
-        { "req_id", reqId },
+        { "id", reqId },
         { "keys", keys }
     });
 }
