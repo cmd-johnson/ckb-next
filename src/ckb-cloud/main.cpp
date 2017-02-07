@@ -3,7 +3,6 @@
 #include "bootstrapper.h"
 #include "keyeffectmanager.h"
 
-#include <memory>
 
 void ckb_info()
 {
@@ -20,18 +19,15 @@ void ckb_info()
     CKB_PRESET_END;
 }
 
-std::unique_ptr<KeyEffectManager> keyEffectManager;
-std::unique_ptr<Bootstrapper> bootstrapper;
+KeyEffectManager* keyEffectManager;
 
 void ckb_init(ckb_runctx* context)
 {
-    if (!keyEffectManager.get()) {
-        keyEffectManager.reset(new KeyEffectManager(context));
-    }
-    if (!bootstrapper.get()) {
-        bootstrapper.reset(new Bootstrapper(keyEffectManager.get()));
+    if (!keyEffectManager) {
+        keyEffectManager = new KeyEffectManager(context);
     }
 
+    Bootstrapper* bootstrapper = new Bootstrapper(keyEffectManager);
     bootstrapper->start();
 }
 
@@ -61,12 +57,12 @@ void ckb_time(ckb_runctx* context, double deltaT)
 {
     Q_UNUSED(context);
 
-    if (keyEffectManager.get()) {
+    if (keyEffectManager) {
         keyEffectManager->advance(deltaT);
     }
 }
 
 int ckb_frame(ckb_runctx* context)
 {
-    return keyEffectManager.get() ? keyEffectManager->getFrame(context) : 0;
+    return keyEffectManager ? keyEffectManager->getFrame(context) : 0;
 }
