@@ -16,7 +16,6 @@ QT           = core network gui
 SOURCES += \
     main.cpp \
     bootstrapper.cpp \
-    tcpclient.cpp \
     keyeffectmanager.cpp \
     keyeffects/keyeffect.cpp \
     keyeffects/fixedcolor.cpp \
@@ -26,7 +25,6 @@ SOURCES += \
 
 HEADERS += \
     bootstrapper.h \
-    tcpclient.h \
     keyeffectmanager.h \
     keyeffects/keyeffect.h \
     keyeffects/fixedcolor.h \
