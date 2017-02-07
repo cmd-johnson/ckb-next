@@ -14,7 +14,7 @@ SUBDIRS = \
     src/ckb-random \
     src/ckb-rain \
     src/ckb-heat \
-    src/ckb-tcp
+    src/ckb-cloud
 
 # Music visualizer requires Pulseaudio libraries
 linux {

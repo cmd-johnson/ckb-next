@@ -1,5 +1,5 @@
 TEMPLATE = app
-TARGET = ckb-tcp
+TARGET = ckb-cloud
 
 QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.9
 QMAKE_CXXFLAGS += -Werror
