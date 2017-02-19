@@ -21,6 +21,7 @@ Color FixedColor::getColor() const
 QJsonObject FixedColor::toJson() const
 {
     return {
+        { "id", getUuid().toString() },
         { "color", getColor().toString() }
     };
 }

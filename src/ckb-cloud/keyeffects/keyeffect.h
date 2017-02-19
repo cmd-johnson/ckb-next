@@ -4,6 +4,7 @@
 #include "color.h"
 
 #include <QJsonObject>
+#include <QUuid>
 
 class KeyEffect
 {
@@ -15,8 +16,11 @@ public:
 
     virtual QJsonObject toJson() const = 0;
 
+    const QUuid& getUuid() const;
+
 protected:
     double phase;
+    const QUuid uuid;
 };
 
 #endif // KEYEFFECT_H

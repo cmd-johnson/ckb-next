@@ -76,6 +76,7 @@ QJsonObject ColorGradient::toJson() const
     }
 
     QJsonObject json = {
+        { "id", getUuid().toString() },
         { "phase", phase },
         { "loop_count", (int)loopCount },
         { "duration", duration },
