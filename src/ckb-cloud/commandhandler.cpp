@@ -47,7 +47,16 @@ QJsonObject ERR_INVALID_COMMAND(const QString& reqId) {
         { "id", reqId },
         { "success", false },
         { "error", "invalid_command" },
-        { "message", "The message does not contain a valid command." }
+        { "message", "The message does not contain a command." }
+    };
+}
+
+QJsonObject ERR_INVALID_COMMAND(const QString& reqId, const QString& command) {
+    return {
+        { "id", reqId },
+        { "success", false },
+        { "error", "invalid_command" },
+        { "message", QString("The message does not contain a valid command. Was given '%1'.").arg(command) }
     };
 }
 
@@ -109,8 +118,8 @@ void CommandHandler::onMessageReceived(const QJsonDocument &json)
     }
 
     auto cmd = commandHandlers.find(command);
-    if (cmd== commandHandlers.end()) {
-        client->sendMessage(ERR_INVALID_COMMAND(reqId));
+    if (cmd == commandHandlers.end()) {
+        client->sendMessage(ERR_INVALID_COMMAND(reqId, command));
     } else {
         cmd.value()(reqId, object, keyEffectManager, client);
     }
