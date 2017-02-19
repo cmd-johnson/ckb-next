@@ -1,5 +1,7 @@
 #include "colorgradient.h"
 
+#include <QJsonArray>
+
 #include <math.h>
 
 ColorGradient::ColorGradient(QList<ColorGradient::ColorStop> colorStops,
@@ -56,4 +58,37 @@ Color ColorGradient::getColor() const
             a.alphaF() * inverseFactor + b.alphaF() * factor
         );
     }
+}
+
+QJsonObject ColorGradient::toJson() const
+{
+    QJsonArray colorStops;
+    for (auto const& stop : this->colorStops) {
+        QJsonObject colorStop = {
+            { "position", stop.position },
+            { "color", QString("#%1%2%3%4")
+              .arg(stop.color.alpha(), 2, 16, QChar('0'))
+              .arg(stop.color.red(), 2, 16, QChar('0'))
+              .arg(stop.color.green(), 2, 16, QChar('0'))
+              .arg(stop.color.blue(), 2, 16, QChar('0')) }
+        };
+        colorStops.append(colorStop);
+    }
+
+    QJsonObject json = {
+        { "phase", phase },
+        { "loop_count", (int)loopCount },
+        { "duration", duration },
+        { "current_color", QString("#%1%2%3%4")
+          .arg(getColor().alpha(), 2, 16, QChar('0'))
+          .arg(getColor().red(), 2, 16, QChar('0'))
+          .arg(getColor().green(), 2, 16, QChar('0'))
+          .arg(getColor().blue(), 2, 16, QChar('0'))
+        },
+        { "color_stops", colorStops }
+    };
+
+
+
+    return json;
 }

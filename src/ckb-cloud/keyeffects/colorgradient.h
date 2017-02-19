@@ -19,6 +19,8 @@ public:
     virtual bool advance(double deltaT) override;
     virtual Color getColor() const override;
 
+    virtual QJsonObject toJson() const override;
+
 private:
     QList<ColorStop> colorStops;
     double duration;

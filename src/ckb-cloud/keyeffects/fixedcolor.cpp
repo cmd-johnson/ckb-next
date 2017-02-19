@@ -17,3 +17,10 @@ Color FixedColor::getColor() const
 {
     return color;
 }
+
+QJsonObject FixedColor::toJson() const
+{
+    return {
+        { "color", getColor().toString() }
+    };
+}
