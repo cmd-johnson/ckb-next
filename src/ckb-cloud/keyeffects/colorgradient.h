@@ -10,14 +10,14 @@ class ColorGradient : public KeyEffect
 public:
     struct ColorStop {
         double position;
-        QColor color;
+        Color color;
     };
 
     ColorGradient(QList<ColorStop> colorStops, double duration = 1.0,
                   uint loopCount = 1);
 
     virtual bool advance(double deltaT) override;
-    virtual QColor getColor() const override;
+    virtual Color getColor() const override;
 
 private:
     QList<ColorStop> colorStops;

@@ -24,10 +24,10 @@ bool ColorGradient::advance(double deltaT)
     return true;
 }
 
-QColor ColorGradient::getColor() const
+Color ColorGradient::getColor() const
 {
     if (colorStops.empty()) {
-        return Qt::transparent;
+        return Color(0, 0, 0, 0);
     }
 
     double phase = this->phase;
@@ -46,10 +46,10 @@ QColor ColorGradient::getColor() const
         double factor = (phase - first->position) / (second->position - first->position);
         double inverseFactor = 1 - factor;
 
-        const QColor& a = first->color;
-        const QColor& b = second->color;
+        const Color& a = first->color;
+        const Color& b = second->color;
 
-        return QColor::fromRgbF(
+        return Color(
             a.redF() * inverseFactor + b.redF() * factor,
             a.greenF() * inverseFactor + b.greenF() * factor,
             a.blueF() * inverseFactor + b.blueF() * factor,

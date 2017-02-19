@@ -44,11 +44,11 @@ int KeyEffectManager::getFrame(ckb_runctx *context) const
         ckb_key& key = context->keys[i];
         auto keyIt = keyEffects.find(key.name);
 
-        QColor color;
+        Color color;
         if (keyIt != keyEffects.end()) {
             color = (*keyIt)->getColor();
         } else {
-            color = Qt::transparent;
+            color = Color(0, 0, 0, 0);
         }
 
         key.r = color.red();

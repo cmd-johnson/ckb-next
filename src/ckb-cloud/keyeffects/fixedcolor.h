@@ -6,13 +6,13 @@
 class FixedColor : public KeyEffect
 {
 public:
-    FixedColor(const QColor& color);
+    FixedColor(const Color& color);
 
     virtual bool advance(double deltaT) override;
-    virtual QColor getColor() const override;
+    virtual Color getColor() const override;
 
 private:
-    QColor color;
+    Color color;
 };
 
 #endif // FIXEDCOLOR_H

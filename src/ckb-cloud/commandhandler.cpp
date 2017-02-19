@@ -149,7 +149,7 @@ void CommandHandler::handleSetColor(const QString& reqId, const QJsonObject &com
         return;
     }
 
-    QColor color = QColor(command["color"].toString());
+    Color color = Color(command["color"].toString());
     if (!color.isValid()) {
         sender->sendMessage(ERR_INVALID_PARAMETER(reqId, "color"));
         return;
@@ -209,7 +209,7 @@ void CommandHandler::handleSetGradient(const QString& reqId, const QJsonObject &
         }
         double position = stop["position"].toDouble();
 
-        QColor color(stop["color"].toString());
+        Color color(stop["color"].toString());
         if (!color.isValid()) {
             sender->sendMessage(ERR_INVALID_PARAMETER(reqId, QString("color_stops[%1].color").arg(i)));
             return;

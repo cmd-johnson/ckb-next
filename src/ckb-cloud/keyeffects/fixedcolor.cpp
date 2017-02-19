@@ -1,6 +1,6 @@
 #include "fixedcolor.h"
 
-FixedColor::FixedColor(const QColor& color) : color(color)
+FixedColor::FixedColor(const Color& color) : color(color)
 {
 }
 
@@ -13,7 +13,7 @@ bool FixedColor::advance(double deltaT)
     return true;
 }
 
-QColor FixedColor::getColor() const
+Color FixedColor::getColor() const
 {
     return color;
 }

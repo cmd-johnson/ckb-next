@@ -11,7 +11,7 @@ macx {
 }
 
 CONFIG      += debug_and_release
-QT           = core network gui
+QT           = core network
 
 SOURCES += \
     main.cpp \
