@@ -69,6 +69,17 @@ QJsonObject ERR_INVALID_PARAMETER(const QString& reqId, const QString& parameter
     };
 }
 
+/* Effect errors */
+
+QJsonObject ERR_FAILED_TO_ADD_EFFECT(const QString& reqId) {
+    return {
+        { "id", reqId },
+        { "success", false },
+        { "error", "failed_to_add_effect" },
+        { "message", "Failed to add the given effect to the key." }
+    };
+}
+
 }
 
 CommandHandler::CommandHandler(KeyEffectManager *keyEffectManager,
@@ -155,7 +166,10 @@ void CommandHandler::handleSetColor(const QString& reqId, const QJsonObject &com
         return;
     }
 
-    keyEffectManager->setEffect(key, new FixedColor(color));
+    if (!keyEffectManager->addEffect(key, new FixedColor(color))) {
+        sender->sendMessage(ERR_FAILED_TO_ADD_EFFECT(reqId));
+        return;
+    }
 
     sender->sendMessage(SUCCESS(reqId));
 }
@@ -218,7 +232,10 @@ void CommandHandler::handleSetGradient(const QString& reqId, const QJsonObject &
         colorStops.append({ position, color });
     }
 
-    keyEffectManager->setEffect(key, new ColorGradient(colorStops, duration, (uint)loopCount));
+    if (!keyEffectManager->addEffect(key, new ColorGradient(colorStops, duration, (uint)loopCount))) {
+        sender->sendMessage(ERR_FAILED_TO_ADD_EFFECT(reqId));
+        return;
+    }
 
     sender->sendMessage(SUCCESS(reqId));
 }
@@ -231,7 +248,7 @@ void CommandHandler::handleClear(const QString& reqId, const QJsonObject &comman
         return;
     }
 
-    keyEffectManager->clearEffect(key);
+    keyEffectManager->clearAllEffects(key);
 
     sender->sendMessage(SUCCESS(reqId));
 }
