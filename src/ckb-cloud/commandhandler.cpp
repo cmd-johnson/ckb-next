@@ -95,9 +95,24 @@ CommandHandler::CommandHandler(KeyEffectManager *keyEffectManager,
     };
 
     commandHandlers["list_keys"] = &CommandHandler::handleListKeys;
-    commandHandlers["set_key_color"] = &CommandHandler::handleSetColor;
-    commandHandlers["set_key_gradient"] = &CommandHandler::handleSetGradient;
-    commandHandlers["clear_key"] = &CommandHandler::handleClear;
+    commandHandlers["get_key"] = &CommandHandler::handleGetKey;
+
+    commandHandlers["list_key_effects"] = &CommandHandler::handleListEffects;
+    commandHandlers["get_key_effect"] = &CommandHandler::handleGetEffect;
+
+    commandHandlers["clear_key_effect"] = &CommandHandler::handleClearEffect;
+    commandHandlers["clear_all_key_effects"] = &CommandHandler::handleClearAllEffects;
+
+    commandHandlers["add_key_effect"] = [](const QString& reqId, const QJsonObject& command, KeyEffectManager* keyEffectManager, Client* sender) {
+        QString effect = command["effect"].toString();
+        if (effect == "color") {
+            CommandHandler::handleAddColor(reqId, command, keyEffectManager, sender);
+        } else if (effect == "gradient") {
+            CommandHandler::handleAddGradient(reqId, command, keyEffectManager, sender);
+        } else {
+            sender->sendMessage(ERR_INVALID_PARAMETER(reqId, "effect"));
+        }
+    };
 }
 
 void CommandHandler::onMessageReceived(const QJsonDocument &json)
@@ -152,11 +167,26 @@ void CommandHandler::handleListKeys(const QString& reqId, const QJsonObject &com
     });
 }
 
-void CommandHandler::handleSetColor(const QString& reqId, const QJsonObject &command, KeyEffectManager *keyEffectManager, Client *sender)
+void CommandHandler::handleGetKey(const QString &reqId, const QJsonObject &command, KeyEffectManager *keyEffectManager, Client *sender)
 {
-    QString key = command["key"].toString();
+    QString key = command["key_id"].toString();
     if (key.isEmpty() || !keyEffectManager->keyExists(key)) {
-        sender->sendMessage(ERR_INVALID_PARAMETER(reqId, "key"));
+        sender->sendMessage(ERR_INVALID_PARAMETER(reqId, key));
+        return;
+    }
+
+    sender->sendMessage({
+        { "success", true },
+        { "id", reqId },
+        { "key_id", *keyEffectManager->getKeys().find(key) }
+    });
+}
+
+void CommandHandler::handleAddColor(const QString& reqId, const QJsonObject &command, KeyEffectManager *keyEffectManager, Client *sender)
+{
+    QString key = command["key_id"].toString();
+    if (key.isEmpty() || !keyEffectManager->keyExists(key)) {
+        sender->sendMessage(ERR_INVALID_PARAMETER(reqId, "key_id"));
         return;
     }
 
@@ -174,11 +204,55 @@ void CommandHandler::handleSetColor(const QString& reqId, const QJsonObject &com
     sender->sendMessage(SUCCESS(reqId));
 }
 
-void CommandHandler::handleSetGradient(const QString& reqId, const QJsonObject &command, KeyEffectManager *keyEffectManager, Client *sender)
+void CommandHandler::handleListEffects(const QString &reqId, const QJsonObject &command, KeyEffectManager *keyEffectManager, Client *sender)
 {
-    QString key = command["key"].toString();
+    QString key = command["key_id"].toString();
     if (key.isEmpty() || !keyEffectManager->keyExists(key)) {
-        sender->sendMessage(ERR_INVALID_PARAMETER(reqId, "key"));
+        sender->sendMessage(ERR_INVALID_PARAMETER(reqId, "key_id"));
+        return;
+    }
+
+    QJsonArray effects;
+    for (const auto& effect : keyEffectManager->getEffects(key)) {
+        effects.append(effect->toJson());
+    }
+    sender->sendMessage({
+        { "success", true },
+        { "id", reqId },
+        { "key_id", key },
+        { "effects", effects }
+    });
+}
+
+void CommandHandler::handleGetEffect(const QString &reqId, const QJsonObject &command, KeyEffectManager *keyEffectManager, Client *sender)
+{
+    QString key = command["key_id"].toString();
+    if (key.isEmpty() || !keyEffectManager->keyExists(key)) {
+        sender->sendMessage(ERR_INVALID_PARAMETER(reqId, "key_id"));
+        return;
+    }
+
+    QString effectId = command["effect_id"].toString();
+    QSharedPointer<KeyEffect> effect;
+    if (effectId.isEmpty() || (effect = keyEffectManager->getEffect(key, effectId)).isNull()) {
+        sender->sendMessage(ERR_INVALID_PARAMETER(reqId, "effect_id"));
+        return;
+    }
+
+    sender->sendMessage({
+        { "success", true },
+        { "id", reqId },
+        { "key_id", key },
+        { "effect_id", effectId },
+        { "effect", effect->toJson() }
+    });
+}
+
+void CommandHandler::handleAddGradient(const QString& reqId, const QJsonObject &command, KeyEffectManager *keyEffectManager, Client *sender)
+{
+    QString key = command["key_id"].toString();
+    if (key.isEmpty() || !keyEffectManager->keyExists(key)) {
+        sender->sendMessage(ERR_INVALID_PARAMETER(reqId, "key_id"));
         return;
     }
 
@@ -240,15 +314,32 @@ void CommandHandler::handleSetGradient(const QString& reqId, const QJsonObject &
     sender->sendMessage(SUCCESS(reqId));
 }
 
-void CommandHandler::handleClear(const QString& reqId, const QJsonObject &command, KeyEffectManager *keyEffectManager, Client *sender)
+void CommandHandler::handleClearAllEffects(const QString& reqId, const QJsonObject &command, KeyEffectManager *keyEffectManager, Client *sender)
 {
-    QString key = command["key"].toString();
+    QString key = command["key_id"].toString();
     if (key.isEmpty() || !keyEffectManager->keyExists(key)) {
-        sender->sendMessage(ERR_INVALID_PARAMETER(reqId, "key"));
+        sender->sendMessage(ERR_INVALID_PARAMETER(reqId, "key_id"));
         return;
     }
 
     keyEffectManager->clearAllEffects(key);
+
+    sender->sendMessage(SUCCESS(reqId));
+}
+
+void CommandHandler::handleClearEffect(const QString &reqId, const QJsonObject &command, KeyEffectManager *keyEffectManager, Client *sender)
+{
+    QString key = command["key_id"].toString();
+    if (key.isEmpty() || !keyEffectManager->keyExists(key)) {
+        sender->sendMessage(ERR_INVALID_PARAMETER(reqId, "key_id"));
+        return;
+    }
+
+    QString effectId = command["effect_id"].toString();
+    if (effectId.isEmpty() || !keyEffectManager->clearEffect(key, effectId)) {
+        sender->sendMessage(ERR_INVALID_PARAMETER(reqId, "effect_id"));
+        return;
+    }
 
     sender->sendMessage(SUCCESS(reqId));
 }

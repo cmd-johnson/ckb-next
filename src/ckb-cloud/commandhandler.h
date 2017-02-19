@@ -26,9 +26,16 @@ private:
     QHash<QString, CommandExecutor> commandHandlers;
 
     static void handleListKeys(const QString& reqId, const QJsonObject& command, KeyEffectManager* keyEffectManager, Client* sender);
-    static void handleSetColor(const QString& reqId, const QJsonObject& command, KeyEffectManager* keyEffectManager, Client* sender);
-    static void handleSetGradient(const QString& reqId, const QJsonObject& command, KeyEffectManager* keyEffectManager, Client* sender);
-    static void handleClear(const QString& reqId, const QJsonObject& command, KeyEffectManager* keyEffectManager, Client* sender);
+    static void handleGetKey(const QString& reqId, const QJsonObject& command, KeyEffectManager* keyEffectManager, Client* sender);
+
+    static void handleListEffects(const QString& reqId, const QJsonObject& command, KeyEffectManager* keyEffectManager, Client* sender);
+    static void handleGetEffect(const QString& reqId, const QJsonObject& command, KeyEffectManager* keyEffectManager, Client* sender);
+
+    static void handleAddColor(const QString& reqId, const QJsonObject& command, KeyEffectManager* keyEffectManager, Client* sender);
+    static void handleAddGradient(const QString& reqId, const QJsonObject& command, KeyEffectManager* keyEffectManager, Client* sender);
+
+    static void handleClearAllEffects(const QString& reqId, const QJsonObject& command, KeyEffectManager* keyEffectManager, Client* sender);
+    static void handleClearEffect(const QString& reqId, const QJsonObject& command, KeyEffectManager* keyEffectManager, Client* sender);
 };
 
 #endif // COMMANDHANDLER_H
