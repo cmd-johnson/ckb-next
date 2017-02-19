@@ -21,7 +21,8 @@ SOURCES += \
     keyeffects/fixedcolor.cpp \
     keyeffects/colorgradient.cpp \
     client.cpp \
-    commandhandler.cpp
+    commandhandler.cpp \
+    color.cpp
 
 HEADERS += \
     bootstrapper.h \
@@ -31,4 +32,5 @@ HEADERS += \
     keyeffects/colorgradient.h \
     client.h \
     commandhandler.h \
-    config.h
+    config.h \
+    color.h
