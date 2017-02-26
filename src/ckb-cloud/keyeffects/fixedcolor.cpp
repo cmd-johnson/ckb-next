@@ -1,5 +1,7 @@
 #include "fixedcolor.h"
 
+#include "uuid.h"
+
 FixedColor::FixedColor(const Color& color) : color(color)
 {
 }
@@ -21,7 +23,7 @@ Color FixedColor::getColor() const
 QJsonObject FixedColor::toJson() const
 {
     return {
-        { "id", getUuid().toString() },
+        { "id", uuidToString(getUuid()) },
         { "color", getColor().toString() }
     };
 }

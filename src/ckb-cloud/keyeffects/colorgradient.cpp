@@ -1,5 +1,7 @@
 #include "colorgradient.h"
 
+#include "uuid.h"
+
 #include <QJsonArray>
 
 #include <math.h>
@@ -76,7 +78,7 @@ QJsonObject ColorGradient::toJson() const
     }
 
     QJsonObject json = {
-        { "id", getUuid().toString() },
+        { "id", uuidToString(getUuid()) },
         { "phase", phase },
         { "loop_count", (int)loopCount },
         { "duration", duration },

@@ -3,6 +3,7 @@
 #include "bootstrapper.h"
 #include "config.h"
 #include "keyeffectmanager.h"
+#include "uuid.h"
 
 #include <QUuid>
 
@@ -23,7 +24,7 @@ void ckb_info()
     // Presets
     CKB_PRESET_START("ckb-cloud");
     CKB_PRESET_PARAM("socket", "/tmp/ckb-cloud");
-    QString uuid = QUuid::createUuid().toString();
+    QString uuid = uuidToString(QUuid::createUuid());
     CKB_PRESET_PARAM("clientid", uuid.toStdString().c_str());
     CKB_PRESET_END;
 }

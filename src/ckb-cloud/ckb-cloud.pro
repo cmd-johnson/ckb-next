@@ -22,7 +22,8 @@ SOURCES += \
     keyeffects/colorgradient.cpp \
     client.cpp \
     commandhandler.cpp \
-    color.cpp
+    color.cpp \
+    uuid.cpp
 
 HEADERS += \
     bootstrapper.h \
@@ -33,4 +34,5 @@ HEADERS += \
     client.h \
     commandhandler.h \
     config.h \
-    color.h
+    color.h \
+    uuid.h
