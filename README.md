@@ -1,6 +1,8 @@
 ckb-next: RGB Driver for Linux and OS X
 ==================================
 
+<a target="_blank" href="http://webchat.freenode.net?channels=%23ckb-next&uio=d4"><img src="https://cloud.githubusercontent.com/assets/493242/14886493/5c660ea2-0d51-11e6-8249-502e6c71e9f2.png" height = "20" /></a>
+
 **ckb-next** is an open-source driver for Corsair keyboards and mice. It aims to bring the features of their proprietary CUE software to the Linux and Mac operating systems. This project is currently a work in progress, but it already supports much of the same functionality, including full RGB animations. More features are coming soon. Testing and bug reports are appreciated!
 
 ![Screenshot](https://i.imgur.com/zMK9jOP.png)
@@ -9,7 +11,7 @@ ckb-next: RGB Driver for Linux and OS X
 
 What happened to the original [ckb](https://github.com/ccMSC/ckb)?
 ---
-We don't know. The author of **ckb** [ccMSC](https://github.com/ccMSC) suddenly disappeared and hasn't showed up since July 2016. So the community around ckb decided to take the project over and continue its development. That's how **ckb-next** was created. Currently it's not rock solid and very easy to set up on newer systems but we are actively working on this. Nevertheless the project already incorporates a notable amount of fixes and patches in comparison to the original ckb.
+Due to time restrictions, the original author of **ckb** [ccMSC](https://github.com/ccMSC) hasn't been able to further develop the software. So the community around it decided to take the project over and continue its development. That's how **ckb-next** was created. Currently it's not rock solid and not very easy to set up on newer systems but we are actively working on this. Nevertheless the project already incorporates a notable amount of fixes and patches in comparison to the original ckb.
 
 Contents
 --------
@@ -27,6 +29,16 @@ See also:
 
 * [Manual for the driver daemon](https://github.com/mattanger/ckb-next/blob/master/DAEMON.md)
 * [ckb testing repository](https://github.com/mattanger/ckb-next/tree/testing) (updated more frequently, but may be unstable)
+
+Current Status
+--------------
+Right now ckb-next is under active development.
+
+*We will cut a release and ship a macOS binary as soon as some important changes are done. Everything you see under "Releases" on GitHub are regular tags which are **NOT** releases. We have yet to publish our first release.*
+
+Currently the recommended way to install ckb-next is to build it from source or install an appropriate package from a package repository. See [Linux Installation](#linux-installation) and [OS X/macOS Installation](#os-xmacos-installation).
+
+Thank you for the interest in this software and your patience.
 
 Device Support
 --------------
@@ -59,15 +71,11 @@ Linux Installation
 
 * Fedora 24/25, CentOS/RHEL 7 (maintained by [@hevanaa](https://github.com/hevanaa)):
     * [`johanh/ckb`](https://copr.fedorainfracloud.org/coprs/johanh/ckb/) - based on `master` branch
+* Arch Linux (maintained by [@makz27](https://github.com/makz27), [@light2yellow](https://github.com/light2yellow)):
+	* [`aur/ckb-next-git`](https://aur.archlinux.org/packages/ckb-next-git) - based on `master` branch (more stable)
+    * [`aur/ckb-next-latest-git`](https://aur.archlinux.org/packages/ckb-next-latest-git) - based on `testing` branch (less stable but fresher)
 
-**ckb** packages (deprecated):
-
-* Arch Linux (maintained by [@light2yellow](https://github.com/light2yellow)):
-	* [`aur/ckb-git`](https://aur.archlinux.org/packages/ckb-git/) - based on `master` branch (more stable)
-	* [`aur/ckb-git-latest`](https://aur.archlinux.org/packages/ckb-git-latest/) - based on `testing` branch (less stable but fresher)
-* Gentoo (maintained by [@mrueg](https://github.com/mrueg)): `emerge -av app-misc/ckb`
-
-If you are a package maintainer or want to discuss something with package maintainers let us know in the issues, so we can have an accountable and centralized communication about this. *If you would like to maintain a package for your favorite distro/OS, please let us know as well.*
+If you are a package maintainer or want to discuss something with package maintainers let us know in [#5](https://github.com/mattanger/ckb-next/issues/5), so we can have an accountable and centralized communication about this. *If you would like to maintain a package for your favorite distro/OS, please let us know as well.*
 
 #### Preparation:
 
@@ -78,15 +86,15 @@ ckb-next requires Qt5 (Qt 5.6 recommened for OS X), libudev, zlib, gcc, g++, and
 * Arch: `sudo pacman -S base-devel qt5-base zlib`
 * Other distros: Look for `qt5` or `libqt5*-devel`
 
-Note: If you build your own kernels, ckb-next requires the uinput flag to be enabled. It is located in `Device Drivers -> Input Device Support -> Miscellaneous devices -> User level driver support`. If you don't know what this means, you can ignore this.
+Note: If you build your own kernels, ckb-next requires the uinput flag to be enabled (CONFIG_INPUT_UINPUT). It is located in `Device Drivers -> Input Device Support -> Miscellaneous devices -> User level driver support`. If you don't know what this means, you can ignore this.
 
 #### Installing:
 
-You can download ckb-next using the "Download zip" option on the right. Extract it and open the ckb-master directory. The easiest way to install ckb is to double-click the `quickinstall` script and run it in a Terminal. It will attempt to build ckb and then ask if you'd like to install/run the application. If the build doesn't succeed, or if you'd like to compile ckb manually, see [`BUILD.md`](https://github.com/ccMSC/ckb/blob/master/BUILD.md) for instructions.
+You can download ckb-next using the "Download zip" option on the right or clone it using `git clone`. Extract it and open the ckb-master directory in a terminal. Run `./quickinstall`. It will attempt to build ckb and then ask if you'd like to install/run the application. If the build doesn't succeed, or if you'd like to hand-tune the compilation of ckb, see [`BUILD.md`](https://github.com/mattanger/ckb-next/blob/master/BUILD.md) for instructions.
 
 #### Upgrading:
 
-To install a new version of ckb, or to reinstall the same version, first delete the ckb-master directory and the zip file from your previous download. Then download the source code again and re-run `quickinstall`. The script will automatically replace the previous installation. You may need to reboot afterward.
+To install a new version of ckb, or to reinstall the same version, first delete the ckb-master directory and the zip file from your previous download. Then download the source code again and re-run `./quickinstall`. The script will automatically replace the previous installation. You may need to reboot afterward.
 
 #### Uninstalling:
 
@@ -117,12 +125,10 @@ sudo rm -rf /usr/bin/ckb-animations
 
 OS X/macOS Installation
 -----------------
-<!--- TODO ship a new binary for mac, this section wastes user's time because most of the times people end up building from source -->
+
 #### Binary download:
 
-The latest OS X/macOS binary can be downloaded here: https://github.com/mattanger/ckb-next/releases/latest
-
-Click on `ckb.pkg` under the Downloads section. This is an automated installer which will set up the driver for you. After it's finished, open ckb.app (it will be installed to your Applications directory) to get started.
+We do not provide binaries just for now. See [Current Status](#current-status).
 
 #### Building from source:
 
@@ -182,7 +188,8 @@ Troubleshooting
 If you have problems connecting the device to your system (device doesn't respond, ckb-daemon doesn't recognize or can't connect it) and/or you experience long boot times when using the keyboard, try adding the following to your kernel's `cmdline`:
 
 * K65 RGB: `usbhid.quirks=0x1B1C:0x1B17:0x20000408`
-* K70: `usbhid.quirks=0x1B1C:0x1B09:0x0x20000408`
+* K70: `usbhid.quirks=0x1B1C:0x1B09:0x20000408`
+* K70 LUX: `usbhid.quirks=0x1B1C:0x1B36:0x20000408`
 * K70 RGB: `usbhid.quirks=0x1B1C:0x1B13:0x20000408`
 * K95: `usbhid.quirks=0x1B1C:0x1B08:0x20000408`
 * K95 RGB: `usbhid.quirks=0x1B1C:0x1B11:0x20000408`
@@ -198,6 +205,16 @@ For instructions on adding `cmdline` parameters in Ubuntu, see https://wiki.ubun
 If you have multiple devices, combine them with commas, starting after the `=`. For instance, for K70 RGB + M65 RGB: `usbhid.quirks=0x1B1C:0x1B13:0x20000408,0x1B1C:0x1B12:0x20000408`
 
 If it still doesn't work, try replacing `0x20000408` with `0x4`. Note that this will cause the kernel driver to ignore the device(s) completely, so you need to ensure ckb-daemon is running at boot or else you'll have no input. This will not work if you are using full-disk encryption.
+
+If you see **GLib** critical errors like
+`GLib-GObject-CRITICAL **: g_type_add_interface_static: assertion 'G_TYPE_IS_INSTANTIATABLE (instance_type)' failed`
+and you are using:
+
+- Qt 5.8 and newer, remove your Qt configuration files and restart the ckb GUI. Also watch out for different style overridings in dotfiles under `~/` generated by Qt automatically, remove them as well.
+
+- Qt 5.7 and lower, install `qt5ct` package on Arch Linux (find a similar one for your distribution). That's all. This is a known Qt bug. It happened because Qt did not ship required GTK files.
+
+If the above didn't work out for you for some reason, see [#70](https://github.com/mattanger/ckb-next/issues/70), [#51](https://github.com/mattanger/ckb-next/issues/51), [ccMSC/ckb#500](https://github.com/ccMSC/ckb/issues/500), [ccMSC/ckb#461](https://github.com/ccMSC/ckb/issues/500).
 
 If you're using **Unity** and the tray icon doesn't appear correctly, run `sudo apt-get install libappindicator-dev`. Then reinstall ckb.
 
@@ -242,6 +259,7 @@ Known issues
 - The tray icon doesn't appear in some desktop environments. This is a known Qt bug. If you can't see the icon, reopen ckb to bring the window back.
 - When starting the driver manually, the Terminal window sometimes gets spammed with enter keys. You can stop it by unplugging and replugging the keyboard or by moving the poll rate switch.
 - When stopping the driver manually, the keyboard sometimes stops working completely. You can reconnect it by moving the poll rate switch.
+- On newer versions of macOS (i.e. 10.12 and up) CMD/Shift+select does not work, yet. Stopping the daemon and GUI for `ckb` will fix this issue temporarily.
 
 Contributing
 ------------
